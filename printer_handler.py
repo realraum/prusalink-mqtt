@@ -74,10 +74,10 @@ class PrinterHandler:
     def get_print_progress_content(self):
         # {“Name”:string, “Description”:string, “elapsed_time_s”:int64, “progress_percent”:int}
         print_status = {
-            'Name': self.printer_info['name'],
-            'Description': None,
-            'elapsed_time_s': self.printer_status['job']['time_printing'],
-            'progress_percent': self.printer_status['job']['progress']
+            'Printer': self.printer_info['name'],
+            'Job': self.job_status['file']['name'],
+            'Elapsed_time_s': self.printer_status['job']['time_printing'],
+            'Progress_percent': self.printer_status['job']['progress']
         }
 
         return dumps(print_status)
