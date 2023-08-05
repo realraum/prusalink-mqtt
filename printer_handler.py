@@ -124,7 +124,7 @@ class PrinterHandler:
 
                 if self.last_dict is None or self.last_dict[topic] != data:
                     self.mqtt_client.publish(actual_topic, data, retain=True)
-                    self.last_dict = topics
+        self.last_dict = topics
 
     def loop_forever(self):
         print('PrusaLink loop_forever()')
