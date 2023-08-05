@@ -12,6 +12,7 @@ class PrinterHandler:
         self.printer_ip = None
         self.api_key = None
         self.printer_status = None
+        self.printer_info = None
         self.job_status = None
         self.thread_terminate = False
 
@@ -73,13 +74,24 @@ class PrinterHandler:
     def get_print_progress_content(self):
         # {“Name”:string, “Description”:string, “elapsed_time_s”:int64, “progress_percent”:int}
         print_status = {
-            'Name': self.job_status['file']['name'],
-            'Description': 'unsupported',
+            'Name': self.printer_info['name'],
+            'Description': None,
             'elapsed_time_s': self.printer_status['job']['time_printing'],
             'progress_percent': self.printer_status['job']['progress']
         }
 
         return dumps(print_status)
+
+    def get_printer_info(self):
+        api_url = f'http://{self.printer_ip}/api/v1/info'
+        headers = {'X-Api-Key': self.api_key}
+
+        response = requests.get(api_url, headers=headers)
+
+        if response.status_code == 200:
+            return response.json()
+
+        return None
 
     def publish_topics(self):
         topics = {
@@ -120,8 +132,9 @@ class PrinterHandler:
         while not self.thread_terminate:
             self.printer_status = self.get_printer_status()
             self.job_status = self.get_job_status()
+            self.printer_info = self.get_printer_info()
 
-            if self.printer_status is not None and self.job_status is not None:
+            if self.printer_status is not None and self.job_status is not None and self.printer_info is not None:
                 self.publish_topics()
 
             sleep(1)
