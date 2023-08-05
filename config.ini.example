@@ -1,0 +1,30 @@
+[prusalink]
+ip_address =
+api_key =
+
+[mqtt_broker]
+broker_ip = mqtt.realraum.at
+broker_port = 1883
+
+[mqtt_topics]
+; custom json format
+job_progress_topic = realraum/prusai3W1/3dprintprogress
+
+; plain values
+job_percentage_topic = realraum/prusai3W1/job/print_percentage
+job_name = realraum/prusai3W1/job/print_name
+job_elapsed_time_topic = realraum/prusai3W1/job/elapsed_time
+job_estimated_time_topic = realraum/prusai3W1/job/estimated_time
+job_remaining_time_topic = realraum/prusai3W1/job/remaining_time
+job_nozzle_diameter_topic = realraum/prusai3W1/job/nozzle_diameter
+job_layer_height_topic = realraum/prusai3W1/job/layer_height
+job_filament_used_mm_topic = realraum/prusai3W1/job/filament_used_mm
+job_filament_used_g_topic = realraum/prusai3W1/job/filament_used_g
+job_filament_type_topic = realraum/prusai3W1/job/filament_type
+job_infill_topic = realraum/prusai3W1/job/infill
+
+printer_status_topic = realraum/prusai3W1/job/status
+printer_nozzle_temp_topic = realraum/prusai3W1/printer/nozzle_temp
+printer_bed_temp_topic = realraum/prusai3W1/printer/bed_temp
+printer_target_nozzle_temp_topic = realraum/prusai3W1/printer/target_nozzle_temp
+printer_target_bed_temp_topic = realraum/prusai3W1/printer/target_bed_temp
