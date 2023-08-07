@@ -1,10 +1,18 @@
 from paho.mqtt.client import Client
-from time import sleep
+from time import sleep, time
 import requests
 
 from json import dumps
 
 from config_handler import ConfigHandler
+
+
+def custom_temp(value):
+    return dumps({
+        "Value": value,
+        "Location": "W1",
+        "Ts": int(time())
+    })
 
 
 class PrinterHandler:
@@ -97,8 +105,8 @@ class PrinterHandler:
         else:
             print_status = {
                 'Printer': self.printer_info['name'],
-                'Job': self.job_status['file']['name'] if self.job_status is not None else self.printer_status['printer']['state'],
-                'Elapsed_time_s': self.printer_status['job']['time_printing'] if "job" in self.printer_status is not None else 0,
+                'Job': f"{self.job_status['file']['name']}" if self.job_status is not None else "" if "job" in self.printer_status is not None and "time_printing" in self.printer_status['job'] and self.printer_status['job']['time_printing'] > 0 else self.printer_status['printer']['state'],
+                'Elapsed_time_s': self.printer_status['job']['time_printing'] if "job" in self.printer_status is not None and "time_printing" in self.printer_status['job'] else 0,
                 'Progress_percent': self.printer_status['job']['progress'] if "job" in self.printer_status is not None else 0
             }
 
@@ -137,6 +145,8 @@ class PrinterHandler:
             'printer_bed_temp_topic': self.printer_status['printer']['temp_bed'],
             'printer_target_nozzle_temp_topic': self.printer_status['printer']['target_nozzle'],
             'printer_target_bed_temp_topic': self.printer_status['printer']['target_bed'],
+            'printer_custom_nozzle_temp_topic': custom_temp(self.printer_status['printer']['temp_nozzle']),
+            'printer_custom_bed_temp_topic': custom_temp(self.printer_status['printer']['temp_bed']),
         }
 
         for topic in topics:
