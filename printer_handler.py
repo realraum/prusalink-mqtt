@@ -7,14 +7,6 @@ from json import dumps
 from config_handler import ConfigHandler
 
 
-def custom_temp(value):
-    return dumps({
-        "Value": value,
-        "Location": "W1",
-        "Ts": int(time())
-    })
-
-
 class PrinterHandler:
     def __init__(self):
         self.printer_ip = None
@@ -132,6 +124,13 @@ class PrinterHandler:
 
         return None
 
+    def custom_temp(self, value, location_key):
+        return dumps({
+            "Value": value,
+            "Location": self.config_handler.get('mqtt_topics', location_key),
+            "Ts": int(time())
+        })
+
     def publish_topics(self):
         topics = {
             # job
@@ -154,8 +153,8 @@ class PrinterHandler:
             'printer_bed_temp_topic': self.printer_status['printer']['temp_bed'],
             'printer_target_nozzle_temp_topic': self.printer_status['printer']['target_nozzle'],
             'printer_target_bed_temp_topic': self.printer_status['printer']['target_bed'],
-            'printer_custom_nozzle_temp_topic': custom_temp(self.printer_status['printer']['temp_nozzle']),
-            'printer_custom_bed_temp_topic': custom_temp(self.printer_status['printer']['temp_bed']),
+            'printer_custom_nozzle_temp_topic': self.custom_temp(self.printer_status['printer']['temp_nozzle'], 'custom_nozzle_location'),
+            'printer_custom_bed_temp_topic': self.custom_temp(self.printer_status['printer']['temp_bed'], 'custom_bed_location'),
         }
 
         for topic in topics:

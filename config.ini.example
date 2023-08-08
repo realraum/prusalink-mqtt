@@ -30,3 +30,6 @@ printer_target_nozzle_temp_topic = realraum/prusai3W1/printer/target_nozzle_temp
 printer_target_bed_temp_topic = realraum/prusai3W1/printer/target_bed_temp
 printer_custom_nozzle_temp_topic = realraum/prusai3W1/nozzle/temperature
 printer_custom_bed_temp_topic = realraum/prusai3W1/bed/temperature
+
+custom_nozzle_location = prusai3W1nozzle
+custom_bed_location = prusai3W1bed
