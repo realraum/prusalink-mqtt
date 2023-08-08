@@ -103,9 +103,14 @@ class PrinterHandler:
                 'Progress_percent': 0
             }
         else:
+            job_name = self.job_status['file']['name'] if self.job_status is not None else ""
+            # if elapsed time is less than 1 second, replace job name with printer state
+            if self.printer_status is not None and "job" in self.printer_status is not None and "time_printing" in self.printer_status['job'] and self.printer_status['job']['time_printing'] < 1:
+                job_name = self.printer_status['printer']['state']
+
             print_status = {
                 'Printer': self.printer_info['name'],
-                'Job': f"{self.job_status['file']['name']}" if self.job_status is not None else "" if "job" in self.printer_status is not None and "time_printing" in self.printer_status['job'] and self.printer_status['job']['time_printing'] > 0 else self.printer_status['printer']['state'],
+                'Job': job_name,
                 'Elapsed_time_s': self.printer_status['job']['time_printing'] if "job" in self.printer_status is not None and "time_printing" in self.printer_status['job'] else 0,
                 'Progress_percent': self.printer_status['job']['progress'] if "job" in self.printer_status is not None else 0
             }
