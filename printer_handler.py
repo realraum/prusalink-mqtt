@@ -108,6 +108,10 @@ class PrinterHandler:
             if self.printer_status is not None and "job" in self.printer_status is not None and "time_printing" in self.printer_status['job'] and self.printer_status['job']['time_printing'] < 1:
                 job_name = self.printer_status['printer']['state']
 
+            # also override it if we do not know the time printing
+            if self.printer_status is not None and "job" in self.printer_status is None or "time_printing" not in self.printer_status['job']:
+                job_name = self.printer_status['printer']['state']
+
             print_status = {
                 'Printer': self.printer_info['name'],
                 'Job': job_name,
